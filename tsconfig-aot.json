@@ -8,12 +8,14 @@
     "experimentalDecorators": true,
     "removeComments": false,
     "noImplicitAny": true,
-    "suppressImplicitAnyIndexErrors": true
+    "suppressImplicitAnyIndexErrors": true,
+    "types": []
   },
 
   "files": [
     "app/app.module.ts",
-    "app/main-aot.ts"
+    "app/main-aot.ts",
+    "./typings/index.d.ts"
   ],
 
   "angularCompilerOptions": {

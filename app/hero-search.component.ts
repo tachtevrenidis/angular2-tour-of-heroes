@@ -6,12 +6,6 @@ import { Subject } from 'rxjs/Subject';
 import { HeroSearchService } from './hero-search.service';
 import { Hero } from './hero';
 
-import 'rxjs/add/observable/of';
-import 'rxjs/add/operator/catch';
-import 'rxjs/add/operator/debounceTime';
-import 'rxjs/add/operator/distinctUntilChanged';
-import 'rxjs/add/operator/switchMap';
-
 @Component({
   moduleId: module.id,
   selector: 'hero-search',
@@ -43,7 +37,7 @@ export class HeroSearchComponent implements OnInit {
         : Observable.of<Hero[]>([]))
       .catch(error => {
         // TODO: real error handling
-        console.log(`Error in component ... ${error}`);
+        console.log(error);
         return Observable.of<Hero[]>([]);
       });
   }
