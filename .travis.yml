@@ -1,0 +1,42 @@
+language: node_js
+env:
+  global:
+  - ENCRYPTION_LABEL: ""
+  - COMMIT_AUTHOR_EMAIL: "tachtevrenidis@us.ibm.com"
+sudo: true
+dist: trusty
+cache:
+  directories:
+  - node_modules
+node_js:
+- '6.1'
+before_install:
+- printf "registry=https://npm-registry.whitewater.ibm.com/\n//npm-registry.whitewater.ibm.com/:_authToken=${NPM_TOKEN}" >> ~/.npmrc
+- npm i -g makeshift && makeshift -s @whitewater -r npm-registry.whitewater.ibm.com
+script:
+- npm run tsc
+- npm run test
+after_success:
+- npm version patch -m "$TRAVIS_REPO_SLUG/build-$TRAVIS_BUILD_NUMBER [ci skip]"
+before_deploy:
+- test $TRAVIS_TEST_RESULT -eq 0 && npm run dist
+- test $TRAVIS_TEST_RESULT -eq 0 && gulp prep-manifest --branchname $TRAVIS_BRANCH --pullrequestid $TRAVIS_PULL_REQUEST
+#- test $TRAVIS_TEST_RESULT -eq 0 && gulp prep-package --branchname $TRAVIS_BRANCH --pullrequestid $TRAVIS_PULL_REQUEST
+deploy:
+- provider: npm
+  email: tachtevrenidis@us.ibm.com
+  api_key: $NPM_TOKEN
+  on:
+    repo: ECM-Venus/tour-of-heroes
+- provider: cloudfoundry
+  api: https://api.ng.bluemix.net
+  username: tachtevrenidis@us.ibm.com
+  password:
+    secure:
+  organization: ECMVenus
+  space: VenusDEV
+  on:
+    repo: ECM-Venus/tour-of-heroes
+    all_branches: true
+after_deploy:
+- git push origin HEAD:$TRAVIS_BRANCH && git push origin HEAD:$TRAVIS_BRANCH --tags

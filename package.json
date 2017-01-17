@@ -1,18 +1,45 @@
 {
   "name": "angular2-tour-of-heroes",
-  "version": "0.1.0",
+  "description": "tour of heroes sample angular2 app",
+  "repository": "https://github.ibm.com/ECM-Venus/tour-of-heroes",
+  "version": "1.1.27",
+  "main": "index.js",
+  "keywords": [
+    "sample"
+  ],
+  "author": "Kosta Tachtevrenidis <tachtevrenidis@us.ibm.com>",
+  "license": "IBM",
+  "publishConfig": {
+    "registry": "https://npm-registry.whitewater.ibm.com"
+  },
+  "cacheDirectories": [
+    "node_modules"
+  ],
   "scripts": {
-    "start": "gulp copy-jit && concurrently \"npm run tsc:w\" \"npm run lite\" ",
-    "lite": "lite-server",
     "postinstall": "typings install",
-    "tsc": "tsc",
-    "tsc:w": "tsc -w",
     "typings": "typings",
-    "aot": "ngc -p tsconfig-aot.json",
-    "rollup": "rollup -c rollup-config.js",
-    "start-aot": "npm run aot && npm run rollup && gulp copy-aot && npm run lite"
+    "lite": "lite-server",
+    "tsc:w": "tsc -w",
+    "run-dev": "gulp copy-jit && concurrently \"npm run tsc:w\" \"npm run lite\" ",
+    "clean-tsc": "gulp clean-js && gulp clean-map",
+    "tsc": "tsc",
+    "clean-aot": "rm -rf aot",
+    "aot": "mkdir -p aot && ngc -p tsconfig-aot.json",
+    "rollup": "rollup -c rollup.config.js",
+    "start-aot": "npm run aot && npm run rollup && gulp copy-aot && npm run lite",
+    "test": "echo 'There are no tests yet'",
+    "clean-dist": "rm -rf dist",
+    "rollup-dist": "rollup -f iife -c -o dist/bundle.es2015.js",
+    "es5-dist": "tsc --target es5 --allowJs dist/bundle.es2015.js --out dist/bundle.js",
+    "minify-dist": "uglifyjs dist/bundle.js --screw-ie8 --compress --mangle --output dist/bundle.min.js",
+    "build-dist": "mkdir -p dist && npm run aot && npm run rollup-dist && npm run es5-dist && npm run minify-dist && gulp copy-min",
+    "clean": "npm run clean-aot && npm run clean-dist && npm run clean-tsc",
+    "dist": "npm run clean-dist && npm run build-dist",
+    "start": "node server.js"
   },
   "dependencies": {
+    "connect": "^2.0.0",
+    "serve-static": "^1.5.0",
     "@angular/common": "~2.0.2",
     "@angular/compiler": "~2.0.2",
     "@angular/compiler-cli": "^0.6.4",
@@ -40,6 +67,9 @@
     "gulp-rename": "^1.2.2",
     "gulp-task-listing": "^1.0.1",
     "gulp-util": "^3.0.7",
+    "gulp-replace": "^0.5.4",
+    "gulp-if": "^2.0.1",
+    "yargs": "^6.0.0",
     "lite-server": "^2.2.2",
     "rollup": "^0.36.1",
     "rollup-plugin-commonjs": "^5.0.4",

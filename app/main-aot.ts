@@ -1,7 +1,10 @@
-import { platformBrowser }    from '@angular/platform-browser';
+import {platformBrowser} from '@angular/platform-browser';
+import {enableProdMode} from '@angular/core';
 
-import { AppModuleNgFactory } from '../aot/app/app.module.ngfactory';
+import {AppModuleNgFactory} from '../aot/app/app.module.ngfactory';
+
+enableProdMode();
 
 platformBrowser().bootstrapModuleFactory(AppModuleNgFactory)
-  .then(success => console.log(`Bootstrap success`))
-  .catch(error => console.log(error));
+    .then(success => console.log(`Bootstrap success`))
+    .catch(error => console.log(error));

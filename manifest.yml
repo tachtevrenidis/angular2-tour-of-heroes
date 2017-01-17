@@ -1,0 +1,9 @@
+---
+name: tour-of-heroes
+memory: 128M
+disk_quota: 256M
+path: .
+buildpack: sdk-for-nodejs_v3_7-20160826-1101
+host: tour-of-heroes
+domain: mybluemix.net
+timeout: 65
